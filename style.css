@@ -1,0 +1,481 @@
+/* ============================================================
+   NOTIFY BROS 3 — Estilo Super Mario Bros 3 / NES
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  image-rendering: pixelated;
+}
+
+:root {
+  --sky:        #5c94fc;      /* azul cielo NES */
+  --sky-light:  #8ab4fd;
+  --brick:      #c84c0c;      /* ladrillo naranja */
+  --brick-dark: #8b2500;
+  --brick-light:#e06030;
+  --qblock:     #e8a000;      /* bloque ? amarillo */
+  --qblock-dark:#b06000;
+  --ground:     #c84c0c;
+  --pipe:       #00a800;      /* tubería verde */
+  --pipe-dark:  #006400;
+  --pipe-light: #00d800;
+  --white:      #fcfcfc;
+  --black:      #000000;
+  --red:        #d01010;
+  --yellow:     #fcbc04;
+  --coin:       #fcbc04;
+  --card-bg:    #000000;
+  --card-border:#fcfcfc;
+}
+
+/* ── Fuente pixel art ─────────────────────────────── */
+body {
+  font-family: 'Press Start 2P', monospace;
+  background-color: var(--sky);
+  background-image:
+    /* nubes pixel en fondo */
+    radial-gradient(ellipse 120px 60px at 15% 25%, rgba(255,255,255,0.9) 60%, transparent 61%),
+    radial-gradient(ellipse 80px 40px at 12% 20%, rgba(255,255,255,0.9) 60%, transparent 61%),
+    radial-gradient(ellipse 80px 40px at 20% 22%, rgba(255,255,255,0.9) 60%, transparent 61%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><rect width='16' height='16' fill='%23fcbc04'/><rect x='4' y='4' width='8' height='8' fill='%23c84c0c'/></svg>") 8 8, crosshair;
+}
+
+/* ── Nubes CSS ────────────────────────────────────── */
+.cloud {
+  position: fixed;
+  background: var(--white);
+  border-radius: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: var(--white);
+}
+
+.cloud-1 {
+  width: 96px; height: 32px;
+  top: 60px; left: 8%;
+  box-shadow:
+    16px -16px 0 var(--white),
+    32px -16px 0 var(--white),
+    48px -16px 0 var(--white),
+    16px -32px 0 var(--white),
+    32px -32px 0 var(--white),
+    0 -8px 0 8px var(--white);
+  animation: cloudFloat 18s linear infinite;
+}
+
+.cloud-2 {
+  width: 64px; height: 24px;
+  top: 90px; right: 12%;
+  box-shadow:
+    16px -16px 0 var(--white),
+    32px -16px 0 var(--white),
+    16px -8px 0 var(--white);
+  animation: cloudFloat 24s linear infinite reverse;
+}
+
+.cloud-3 {
+  width: 80px; height: 28px;
+  top: 50px; left: 45%;
+  box-shadow:
+    16px -16px 0 var(--white),
+    32px -16px 0 var(--white),
+    48px -12px 0 var(--white),
+    16px -8px 0 var(--white);
+  animation: cloudFloat 20s linear infinite;
+}
+
+@keyframes cloudFloat {
+  from { transform: translateX(-20px); }
+  to   { transform: translateX(20px); }
+}
+
+/* ── HUD estilo NES ───────────────────────────────── */
+.hud {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 20px 8px;
+  background: transparent;
+  gap: 8px;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-label {
+  font-size: 0.5rem;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+
+.hud-value {
+  font-size: 0.6rem;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+
+.hud-center {
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Escenario principal ──────────────────────────── */
+.stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 0 16px;
+  flex: 1;
+}
+
+/* ── Bloques ? y Ladrillo ─────────────────────────── */
+.blocks-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  margin-top: 8px;
+}
+
+/* Bloque ladrillo */
+.brick {
+  width: 48px;
+  height: 48px;
+  background: var(--brick);
+  border: 4px solid var(--black);
+  box-shadow:
+    inset -4px -4px 0 var(--brick-dark),
+    inset 4px 4px 0 var(--brick-light);
+  position: relative;
+}
+
+.brick::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 3px;
+  background: var(--brick-dark);
+  transform: translateY(-50%);
+}
+
+.brick::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: var(--brick-dark);
+}
+
+/* Bloque ? */
+.qblock {
+  width: 48px;
+  height: 48px;
+  background: var(--qblock);
+  border: 4px solid var(--black);
+  box-shadow:
+    inset -4px -4px 0 var(--qblock-dark),
+    inset 4px 4px 0 #fce870;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--black);
+  cursor: pointer;
+  transition: transform 0.1s;
+  user-select: none;
+}
+
+.qblock:hover {
+  filter: brightness(1.1);
+}
+
+.qblock.golpeado {
+  animation: golpe 0.3s ease;
+  background: #888;
+  color: #555;
+  cursor: default;
+}
+
+@keyframes golpe {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-12px); }
+  60%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+/* ── Tarjeta de juego ─────────────────────────────── */
+.game-card {
+  background: var(--black);
+  border: 4px solid var(--white);
+  /* Borde pixel art con sombra exterior */
+  box-shadow:
+    4px 4px 0 #444,
+    8px 8px 0 #222,
+    -2px -2px 0 #666;
+  width: 100%;
+  max-width: 560px;
+  padding: 24px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+/* Borde interior decorativo */
+.game-card::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px solid #444;
+  pointer-events: none;
+}
+
+.card-title-bar {
+  font-size: clamp(0.55rem, 2vw, 0.8rem);
+  color: var(--yellow);
+  letter-spacing: 2px;
+  text-align: center;
+  text-shadow: 2px 2px 0 #b06000;
+  animation: titleFlash 2s step-end infinite;
+}
+
+@keyframes titleFlash {
+  0%, 100% { color: var(--yellow); }
+  50%       { color: var(--white); }
+}
+
+.card-subtitle {
+  font-size: 0.45rem;
+  color: var(--white);
+  text-align: center;
+  line-height: 2.2;
+  letter-spacing: 1px;
+}
+
+/* ── Caja de estado ───────────────────────────────── */
+.status-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #111;
+  border: 3px solid #444;
+  padding: 12px 20px;
+  width: 100%;
+  font-size: 0.45rem;
+  color: var(--white);
+  letter-spacing: 1px;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.status-box.granted {
+  border-color: #00d800;
+  color: #00ff00;
+}
+
+.status-box.denied {
+  border-color: var(--red);
+  color: #ff4444;
+}
+
+.status-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+/* ── Botones estilo NES ───────────────────────────── */
+.nes-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.45rem, 1.5vw, 0.6rem);
+  padding: 14px 20px;
+  background: var(--red);
+  color: var(--white);
+  border: 4px solid var(--black);
+  box-shadow:
+    inset -4px -4px 0 #800000,
+    inset 4px 4px 0 #ff6060,
+    4px 4px 0 var(--black);
+  cursor: pointer;
+  letter-spacing: 1px;
+  width: 100%;
+  text-align: center;
+  transition: transform 0.1s, box-shadow 0.1s;
+  text-transform: uppercase;
+}
+
+.nes-btn:hover {
+  filter: brightness(1.1);
+  transform: translate(-2px, -2px);
+  box-shadow:
+    inset -4px -4px 0 #800000,
+    inset 4px 4px 0 #ff6060,
+    6px 6px 0 var(--black);
+}
+
+.nes-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow:
+    inset 4px 4px 0 #800000,
+    inset -4px -4px 0 #ff6060,
+    2px 2px 0 var(--black);
+}
+
+.nes-btn-green {
+  background: var(--pipe);
+  box-shadow:
+    inset -4px -4px 0 var(--pipe-dark),
+    inset 4px 4px 0 var(--pipe-light),
+    4px 4px 0 var(--black);
+}
+
+.nes-btn-green:hover {
+  box-shadow:
+    inset -4px -4px 0 var(--pipe-dark),
+    inset 4px 4px 0 var(--pipe-light),
+    6px 6px 0 var(--black);
+}
+
+.nes-btn-green:active {
+  box-shadow:
+    inset 4px 4px 0 var(--pipe-dark),
+    inset -4px -4px 0 var(--pipe-light),
+    2px 2px 0 var(--black);
+}
+
+.hidden { display: none !important; }
+
+/* ── Caja de mensaje ──────────────────────────────── */
+.message-box {
+  width: 100%;
+  background: #111;
+  border: 3px solid var(--yellow);
+  padding: 10px 16px;
+  font-size: 0.45rem;
+  color: var(--yellow);
+  text-align: center;
+  letter-spacing: 1px;
+  line-height: 2;
+  animation: msgAppear 0.2s step-end;
+}
+
+@keyframes msgAppear {
+  from { opacity: 0; transform: scaleY(0); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+
+.message-box.err  { border-color: var(--red); color: #ff6060; }
+.message-box.ok   { border-color: #00d800; color: #00ff00; }
+.message-box.warn { border-color: var(--yellow); color: var(--yellow); }
+
+/* ── Moneda animada ───────────────────────────────── */
+.coin-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.2rem;
+  color: var(--coin);
+  text-shadow: 2px 2px 0 #000;
+  pointer-events: none;
+  z-index: 100;
+  animation: coinJump 0.8s ease-out forwards;
+}
+
+@keyframes coinJump {
+  0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  60%  { transform: translate(-50%, -120%) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -200%) scale(0.8); opacity: 0; }
+}
+
+/* ── Suelo y tuberías ─────────────────────────────── */
+.ground-section {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 640px;
+  margin-top: 24px;
+  gap: 0;
+}
+
+.pipe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.pipe-head {
+  width: 64px;
+  height: 20px;
+  background: var(--pipe);
+  border: 4px solid var(--black);
+  box-shadow:
+    inset -4px -4px 0 var(--pipe-dark),
+    inset 4px 4px 0 var(--pipe-light);
+}
+
+.pipe-body {
+  width: 52px;
+  height: 56px;
+  background: var(--pipe);
+  border: 4px solid var(--black);
+  border-top: none;
+  box-shadow:
+    inset -4px 0 0 var(--pipe-dark),
+    inset 4px 0 0 var(--pipe-light);
+}
+
+.ground {
+  flex: 1;
+  display: flex;
+  align-self: flex-end;
+}
+
+.ground-block {
+  flex: 1;
+  height: 40px;
+  background: var(--ground);
+  border: 2px solid var(--black);
+  box-shadow:
+    inset -3px -3px 0 var(--brick-dark),
+    inset 3px 3px 0 var(--brick-light);
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 480px) {
+  .hud { padding: 10px 12px 6px; }
+  .hud-label, .hud-value { font-size: 0.4rem; }
+  .game-card { padding: 16px 12px; gap: 14px; }
+  .card-title-bar { font-size: 0.5rem; }
+  .brick, .qblock { width: 38px; height: 38px; }
+  .nes-btn { font-size: 0.4rem; padding: 12px 10px; }
+}

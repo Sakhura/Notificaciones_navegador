@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOTIFICACIONES BROS 3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Nubes decorativas -->
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+
+  <!-- HUD superior estilo NES -->
+  <div class="hud">
+    <div class="hud-item">
+      <span class="hud-label">MARIO</span>
+      <span class="hud-value" id="score">000000</span>
+    </div>
+    <div class="hud-item hud-center">
+      <span>🪙</span>
+      <span class="hud-value" id="coins">×00</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label">WORLD</span>
+      <span class="hud-value">3-1</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label">TIME</span>
+      <span class="hud-value" id="timer">300</span>
+    </div>
+  </div>
+
+  <!-- Escenario principal -->
+  <main class="stage">
+
+    <!-- Bloques superiores decorativos -->
+    <div class="blocks-row">
+      <div class="brick"></div>
+      <div class="qblock" id="qblock" onclick="golpearBloque()">?</div>
+      <div class="brick"></div>
+      <div class="qblock">?</div>
+      <div class="brick"></div>
+      <div class="qblock">?</div>
+      <div class="brick"></div>
+    </div>
+
+    <!-- Tarjeta de juego -->
+    <div class="game-card">
+      <div class="card-title-bar">
+        <span>★</span> NOTIFICATION BROS <span>★</span>
+      </div>
+
+      <p class="card-subtitle">
+        ¡GOLPEA EL BLOQUE ? O PRESIONA<br>
+        EL BOTÓN PARA ACTIVAR POWER-UP!
+      </p>
+
+      <!-- Estado del permiso -->
+      <div class="status-box" id="statusBox">
+        <span class="status-icon" id="statusIcon">❓</span>
+        <span id="statusText">PERMISO: DESCONOCIDO</span>
+      </div>
+
+      <!-- Botones -->
+      <button class="nes-btn" id="btnActivar" onclick="activarNotificaciones()">
+        ▶ PEDIR PERMISO
+      </button>
+
+      <button class="nes-btn nes-btn-green hidden" id="btnEnviar" onclick="enviarNotificacion()">
+        🔔 ENVIAR NOTIFICACIÓN
+      </button>
+
+      <!-- Mensaje -->
+      <div class="message-box hidden" id="messageBox">
+        <span id="messageText"></span>
+      </div>
+    </div>
+
+    <!-- Suelo con tuberías -->
+    <div class="ground-section">
+      <div class="pipe">
+        <div class="pipe-head"></div>
+        <div class="pipe-body"></div>
+      </div>
+
+      <div class="ground">
+        <div class="ground-block"></div>
+        <div class="ground-block"></div>
+        <div class="ground-block"></div>
+        <div class="ground-block"></div>
+        <div class="ground-block"></div>
+        <div class="ground-block"></div>
+        <div class="ground-block"></div>
+        <div class="ground-block"></div>
+        <div class="ground-block"></div>
+        <div class="ground-block"></div>
+      </div>
+
+      <div class="pipe pipe-right">
+        <div class="pipe-head"></div>
+        <div class="pipe-body"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Moneda animada -->
+  <div class="coin-popup hidden" id="coinPopup">🪙 +100</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
